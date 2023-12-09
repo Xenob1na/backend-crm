@@ -3,6 +3,7 @@ import {
   getTaskById,
   insertTask,
   deleteTaskById,
+  deleteAll,
 } from "../models/taskModel.js";
 
 export const showTasks = async (req, res) => {
@@ -61,6 +62,23 @@ export const deleteTask = async (req, res) => {
   try {
     const id = req.params.id;
     deleteTaskById(id, (err, results) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(results);
+      }
+    });
+  } catch {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Something went wrong",
+    });
+  }
+};
+
+export const deleteTaskAll = async (req, res) => {
+  try {
+    deleteAll((err, results) => {
       if (err) {
         res.send(err);
       } else {

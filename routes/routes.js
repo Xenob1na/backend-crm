@@ -12,7 +12,24 @@ import {
   showTaskById,
   createTask,
   deleteTask,
+  deleteTaskAll,
 } from "../controllers/taskController.js";
+
+import {
+  showCustomers,
+  showCustomersById,
+  createCustomer,
+  updateCustomerById,
+  deleteCustomer,
+} from "../controllers/customerController.js";
+
+import {
+  showStaffs,
+  showStaffsById,
+  createStaffs,
+  updateStaffById,
+  deleteStaff,
+} from "../controllers/staffController.js";
 
 const router = express.Router();
 
@@ -27,14 +44,14 @@ router.post("/register", signupValidation, (req, res, next) => {
           msg: "This user is already in use!",
         });
       } else {
-        // username is available
+        
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
             return res.status(500).send({
               msg: err,
             });
           } else {
-            // has hashed pw => add to database
+            
             db.query(
               `INSERT INTO users (name, email, password) VALUES ('${
                 req.body.name
@@ -62,7 +79,7 @@ router.post("/login", loginValidation, (req, res, next) => {
   db.query(
     `SELECT * FROM users WHERE email = ${db.escape(req.body.email)};`,
     (err, result) => {
-      // user does not exists
+      
       if (err) {
         throw err;
         return res.status(400).send({
@@ -74,12 +91,12 @@ router.post("/login", loginValidation, (req, res, next) => {
           msg: "Email or password is incorrect!",
         });
       }
-      // check password
+      
       bcrypt.compare(
         req.body.password,
         result[0]["password"],
         (bErr, bResult) => {
-          // wrong password
+          
           if (bErr) {
             throw bErr;
             return res.status(401).send({
@@ -142,5 +159,18 @@ router.get("/tasks", showTasks);
 router.get("/tasks/:id", showTaskById);
 router.post("/tasks", createTask);
 router.delete("/tasks/:id", deleteTask);
+router.delete("/tasks", deleteTaskAll);
+
+router.get("/customers", showCustomers);
+router.get("/customers/:id", showCustomersById);
+router.post("/customers", createCustomer);
+router.put("/customers/:id", updateCustomerById);
+router.delete("/customers/:id", deleteCustomer);
+
+router.get("/staffs", showStaffs);
+router.get("/staffs/:id", showStaffsById);
+router.post("/staffs", createStaffs);
+router.put("/staffs/:id", updateStaffById);
+router.delete("/staffs/:id", deleteStaff);
 
 export default router;
