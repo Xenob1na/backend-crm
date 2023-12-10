@@ -5,7 +5,6 @@ import { signupValidation, loginValidation } from "../helpers/validation.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import validationResult from "express-validator";
 
 import {
   showTasks,
@@ -30,6 +29,14 @@ import {
   updateStaffById,
   deleteStaff,
 } from "../controllers/staffController.js";
+
+import {
+  showSchedule,
+  showSchedulesById,
+  createSchedule,
+  updateScheduleById,
+  deleteSchedule,
+} from "../controllers/scheduleController.js";
 
 const router = express.Router();
 
@@ -59,9 +66,6 @@ router.post("/register", signupValidation, (req, res, next) => {
               (err, result) => {
                 if (err) {
                   throw err;
-                  return res.status(400).send({
-                    msg: err,
-                  });
                 }
                 return res.status(201).send({
                   msg: "The user has been registerd with us!",
@@ -82,9 +86,6 @@ router.post("/login", loginValidation, (req, res, next) => {
       
       if (err) {
         throw err;
-        return res.status(400).send({
-          msg: err,
-        });
       }
       if (!result.length) {
         return res.status(401).send({
@@ -99,16 +100,15 @@ router.post("/login", loginValidation, (req, res, next) => {
           
           if (bErr) {
             throw bErr;
-            return res.status(401).send({
-              msg: "Email or password is incorrect!",
-            });
           }
           if (bResult) {
             const token = jwt.sign(
               { id: result[0].id },
               "the-super-strong-secrect",
-              { expiresIn: "1h" }
+              { expiresIn: "1h" },
+              { algorithm: 'HS256' }
             );
+            res.co
             db.query(
               `UPDATE users SET last_login = now() WHERE id = '${result[0].id}'`
             );
@@ -172,5 +172,11 @@ router.get("/staffs/:id", showStaffsById);
 router.post("/staffs", createStaffs);
 router.put("/staffs/:id", updateStaffById);
 router.delete("/staffs/:id", deleteStaff);
+
+router.get("/schedules", showSchedule);
+router.get("/schedules/:id", showSchedulesById);
+router.post("/schedules", createSchedule);
+router.put("/schedules/:id", updateScheduleById);
+router.delete("/schedules/:id", deleteSchedule);
 
 export default router;
