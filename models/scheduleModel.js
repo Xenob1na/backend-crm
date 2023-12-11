@@ -1,7 +1,7 @@
 import db from "../config/database.js";
 
 export const getSchedules = (result) => {
-  db.query("SELECT * FROM schedules", (err, results) => {
+  db.query("SELECT schedules.schedule_id, schedules.created_date, customers.full_name_customer, staffs.full_name_staff, customers.address FROM schedules, customers, staffs WHERE schedules.customer_id = customers.customer_id AND schedules.staff_id=staffs.staff_id", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
@@ -13,7 +13,7 @@ export const getSchedules = (result) => {
 
 export const getSchedulesById = (id, result) => {
   db.query(
-    "SELECT * FROM schedules WHERE schedule_id = ?",
+    "SELECT schedules.schedule_id, schedules.created_date, customers.full_name_customer, staffs.full_name_staff, customers.address FROM schedules, customers, staffs WHERE schedules.customer_id = customers.customer_id AND schedules.staff_id=staffs.staff_id AND schedules.schedule_id = ?",
     [id],
     (err, results) => {
       if (err) {
