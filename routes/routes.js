@@ -89,7 +89,7 @@ router.post("/login", loginValidation, (req, res, next) => {
       }
       if (!result.length) {
         return res.status(401).send({
-          msg: "Email or password is incorrect!",
+          message: "Email or password is incorrect!",
         });
       }
       
@@ -119,7 +119,7 @@ router.post("/login", loginValidation, (req, res, next) => {
             });
           }
           return res.status(401).send({
-            msg: "Username or password is incorrect!",
+            message: "Username or password is incorrect!",
           });
         }
       );

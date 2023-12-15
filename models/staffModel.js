@@ -46,9 +46,9 @@ export const deleteStaffById = (id, result) => {
 
 export const updateStaff = (data, id, result) => {
   db.query(
-    "UPDATE staffs SET full_name = ?, email = ?, phone = ?, address = ?, post = ?, age = ? WHERE staff_id = ?",
+    "UPDATE staffs SET full_name_staff = ?, email = ?, phone = ?, address = ?, post = ?, age = ? WHERE staff_id = ?",
     [
-      data.full_name,
+      data.full_name_staff,
       data.email,
       data.phone,
       data.address,

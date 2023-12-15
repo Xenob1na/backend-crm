@@ -39,9 +39,9 @@ export const insertCustomer = (data, result) => {
 
 export const updateCustomer = (data, id, result) => {
   db.query(
-    "UPDATE customers SET full_name = ?, email = ?, phone = ?, address = ?, description = ? WHERE customer_id = ?",
+    "UPDATE customers SET full_name_customer = ?, email = ?, phone = ?, address = ?, description = ? WHERE customer_id = ?",
     [
-      data.full_name,
+      data.full_name_customer,
       data.email,
       data.phone,
       data.address,
