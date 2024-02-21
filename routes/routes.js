@@ -7,28 +7,28 @@ import jwt from "jsonwebtoken";
 
 
 import {
-  showTasks,
-  showTaskById,
+  getTasks,
+  getTaskById,
   createTask,
   deleteTask,
-  deleteTaskAll,
-} from "../controllers/taskController.js";
+  deleteTaskAll
+} from "../controllers/task.controller.js"
 
 import {
-  showCustomers,
-  showCustomersById,
+  getCustomers,
+  getCustomerById,
   createCustomer,
   updateCustomerById,
   deleteCustomer,
-} from "../controllers/customerController.js";
+} from "../controllers/customer.contorller.js";
 
 import {
-  showStaffs,
-  showStaffsById,
-  createStaffs,
+  getStaffs,
+  getStaffById,
+  createStaff,
   updateStaffById,
   deleteStaff,
-} from "../controllers/staffController.js";
+} from "../controllers/staff.controller.js";
 
 import {
   showSchedule,
@@ -155,21 +155,21 @@ router.get("/get-user", signupValidation, (req, res, next) => {
   );
 });
 
-router.get("/tasks", showTasks);
-router.get("/tasks/:id", showTaskById);
+router.get("/tasks", getTasks);
+router.get("/tasks/:id", getTaskById);
 router.post("/tasks", createTask);
 router.delete("/tasks/:id", deleteTask);
 router.delete("/tasks", deleteTaskAll);
 
-router.get("/customers", showCustomers);
-router.get("/customers/:id", showCustomersById);
+router.get("/customers", getCustomers);
+router.get("/customers/:id", getCustomerById);
 router.post("/customers", createCustomer);
 router.put("/customers/:id", updateCustomerById);
 router.delete("/customers/:id", deleteCustomer);
 
-router.get("/staffs", showStaffs);
-router.get("/staffs/:id", showStaffsById);
-router.post("/staffs", createStaffs);
+router.get("/staffs", getStaffs);
+router.get("/staffs/:id", getStaffById);
+router.post("/staffs", createStaff);
 router.put("/staffs/:id", updateStaffById);
 router.delete("/staffs/:id", deleteStaff);
 
