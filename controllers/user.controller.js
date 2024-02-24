@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import "dotenv/config";
+import router from "../routes/routes.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -64,6 +65,13 @@ export const loginUser = async (req, res) => {
       algorithm: "HS256",
     });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       data: {
         id: user.id,
@@ -94,12 +102,20 @@ export const getUser = async (req, res) => {
     const decoded = jwt.verify(theToken, process.env.TOKEN_SECRET);
 
     const user = await User.findOne({ where: { id: decoded.id } });
-
-
     
 
     console.log(user);
     return res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token", { httpOnly: true, sameSite: "None", secure: true });
+    
+    return res.status(200).json({ message: "Logout success" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

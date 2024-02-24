@@ -3,14 +3,19 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 
+import cookieParser from "cookie-parser";
+
 import db from "./config/db.js";
 
 import Router from "./routes/routes.js";
+
+
 
 import "dotenv/config";
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 
 try {
@@ -26,6 +31,15 @@ app.get('/', (req, res) => {
 
 app.use(morgan("dev"));
 app.use(cors());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000', 'https://localhost:5000'); // Разрешаем запросы с http://localhost:3000
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api", Router);

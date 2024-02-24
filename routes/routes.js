@@ -36,6 +36,7 @@ import {
   registerUser,
   loginUser,
   getUser,
+  logoutUser
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -43,6 +44,7 @@ const router = express.Router();
 router.post("/registerUser", registerUser);
 router.post("/loginUser", loginUser);
 router.get("/getUser",  getUser);
+router.post("/logoutUser", logoutUser);
 
 router.get("/tasks", getTasks);
 router.get("/tasks/:id", getTaskById);
