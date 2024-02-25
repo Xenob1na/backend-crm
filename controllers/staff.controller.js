@@ -1,8 +1,18 @@
 import { Staff } from "../models/staff.model.js";
 
 export const getStaffs = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 4;
+  let staffs;
   try {
-    const staffs = await Staff.findAll();
+    if (page && limit) {
+      staffs = await Staff.findAndCountAll({
+        offset: (page - 1) * limit,
+        limit: limit,
+      });
+    } else {
+      staffs = await Staff.findAll();
+    }
 
     res.status(200).json({ message: "Success", data: staffs });
   } catch (error) {

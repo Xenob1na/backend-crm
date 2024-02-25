@@ -1,9 +1,18 @@
 import { Customer } from "../models/customer.model.js";
 
 export const getCustomers = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 4;
+  let customers;
   try {
-    const customers = await Customer.findAll();
-
+    if (page && limit) {
+      customers = await Customer.findAndCountAll({
+        offset: (page - 1) * limit,
+        limit: limit,
+      });
+    } else {
+      customers = await Customer.findAll();
+    }
     res.status(200).json({ message: "Success", data: customers });
   } catch (error) {
     res.status(500).json({ message: error.message });
